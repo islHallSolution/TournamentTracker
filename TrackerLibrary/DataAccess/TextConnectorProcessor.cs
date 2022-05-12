@@ -29,11 +29,11 @@ namespace TrackerLibrary.DataAccess.TextHelpers
         /// <param name="filePath"></param>
         public static void CreateDirectoryToFilePath(this string filePath)
         {
-             
+
             if (!Directory.Exists(filePath))
             {
-                Directory.CreateDirectory(filePath);     
-            }             
+                Directory.CreateDirectory(filePath);
+            }
         }
 
         /// <summary>
@@ -74,6 +74,25 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             }
             return output;
         }
+
+        public static List<PersonModel> ConvertToPersonModels(this List<string> lines)
+        {
+            List<PersonModel> output = new List<PersonModel>();
+            foreach (string line in lines)
+            {
+                string[] cols = line.Split(',');
+                PersonModel p = new PersonModel();
+                p.Id = int.Parse(cols[0]);
+                p.FirstName = cols[1];
+                p.LastName = cols[2];
+                p.EmailAdress = cols[3];
+                p.CellphoneNumber = cols[4];
+
+                output.Add(p);
+            }
+            return output;
+        }
+
         /// <summary>
         /// Save the List<string> to the text file.
         /// </summary>
@@ -88,6 +107,17 @@ namespace TrackerLibrary.DataAccess.TextHelpers
             }
 
             File.WriteAllLines(filename.FullFilePath(), lines);
+        }
+
+        public static void SaveToPeopleFile(this List<PersonModel> models, string filename)
+        {
+            List<string> lines = new List<string>();
+            foreach (PersonModel p in models)
+            {
+                lines.Add($"{p.Id},{p.FirstName},{p.LastName},{p.EmailAdress},{p.CellphoneNumber}");
+            }
+
+            File.WriteAllLines (filename.FullFilePath(), lines);
         }
     }
 }

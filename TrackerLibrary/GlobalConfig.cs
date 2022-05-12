@@ -18,14 +18,12 @@ namespace TrackerLibrary
         public static void InitializaConnections(DatabaseType db)
         {
             if (db == DatabaseType.Sql)
-            {
-                //Todo - Set up the SQL Connector properly
+            { 
                 SqlConnector sql = new SqlConnector();
                 Connection = sql;
             }
             else if (db == DatabaseType.TextFile)
-            {
-                //Todo - Create the text connection
+            { 
                 TextConnector text = new TextConnector();
                 Connection = text;
             }

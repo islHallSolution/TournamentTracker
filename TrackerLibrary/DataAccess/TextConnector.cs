@@ -20,7 +20,7 @@ namespace TrackerLibrary.DataAccess
 
 
         public PrizeModel CreatePrize(PrizeModel model)
-        { 
+        {
 
             //load the text file and convert the text to List<PrizeModel>   
             List<PrizeModel> prizes = PrizesFile.FullFilePath().LoadFile().ConvertToPrizeModels();
@@ -47,7 +47,7 @@ namespace TrackerLibrary.DataAccess
         {
             List<PersonModel> people = PeopleFile.FullFilePath().LoadFile().ConvertToPersonModels();
             int currentId = 1;
-            if(people.Count > 0)
+            if (people.Count > 0)
             {
                 currentId = people.OrderByDescending(x => x.Id).First().Id + 1;
             }
@@ -78,11 +78,11 @@ namespace TrackerLibrary.DataAccess
         {
             return PeopleFile.FullFilePath().LoadFile().ConvertToPersonModels();
         }
-         
+
         public List<TeamModel> GetAllTeam()
         {
             return TeamFile.FullFilePath().LoadFile().ConvertToTeamModels(PeopleFile);
-        
+
         }
 
         public void CreateTournament(TournamentModel model)
@@ -90,11 +90,11 @@ namespace TrackerLibrary.DataAccess
             List<TournamentModel> tournaments = TournamentFile
                 .FullFilePath()
                 .LoadFile().
-                ConvertToTournamentModels(TeamFile,PeopleFile,PrizesFile);
+                ConvertToTournamentModels(TeamFile, PeopleFile, PrizesFile);
             int currentId = 0;
-            if (tournaments.Count >0)
+            if (tournaments.Count > 0)
             {
-                currentId = tournaments.OrderByDescending(x=> x.Id).First().Id + 1;
+                currentId = tournaments.OrderByDescending(x => x.Id).First().Id + 1;
             }
             model.Id = currentId;
 
@@ -103,6 +103,14 @@ namespace TrackerLibrary.DataAccess
             tournaments.Add(model);
             tournaments.SaveToTournamentFile(TournamentFile);
 
+        }
+
+        public List<TournamentModel> GetAllTournament()
+        {
+            return TournamentFile
+                .FullFilePath()
+                .LoadFile().
+                ConvertToTournamentModels(TeamFile, PeopleFile, PrizesFile);
         }
     }
 }

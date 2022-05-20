@@ -86,6 +86,7 @@ namespace TrackerLibrary
         }
         private static void CreateOtherRounds(TournamentModel model, int rounds)
         {
+            //TODO - Verificar os rounds estão corretos
             int round = 2;
             List<MatchupModel> previousRound = model.Rounds[0];
             List<MatchupModel> currRound = new List<MatchupModel>();

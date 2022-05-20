@@ -81,11 +81,13 @@ namespace TrackerUI
             // 
             // roundDropDown
             // 
+            this.roundDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.roundDropDown.FormattingEnabled = true;
             this.roundDropDown.Location = new System.Drawing.Point(123, 74);
             this.roundDropDown.Name = "roundDropDown";
             this.roundDropDown.Size = new System.Drawing.Size(197, 38);
             this.roundDropDown.TabIndex = 3;
+            this.roundDropDown.SelectedIndexChanged += new System.EventHandler(this.roundDropDown_SelectedIndexChanged);
             // 
             // unplayedOnlycheckBox
             // 
@@ -99,6 +101,7 @@ namespace TrackerUI
             this.unplayedOnlycheckBox.TabIndex = 4;
             this.unplayedOnlycheckBox.Text = "Unplayed Only";
             this.unplayedOnlycheckBox.UseVisualStyleBackColor = true;
+            this.unplayedOnlycheckBox.CheckedChanged += new System.EventHandler(this.unplayedOnlycheckBox_CheckedChanged);
             // 
             // matchuplistBox
             // 
@@ -108,6 +111,7 @@ namespace TrackerUI
             this.matchuplistBox.Name = "matchuplistBox";
             this.matchuplistBox.Size = new System.Drawing.Size(299, 244);
             this.matchuplistBox.TabIndex = 5;
+            this.matchuplistBox.SelectedIndexChanged += new System.EventHandler(this.matchuplistBox_SelectedIndexChanged);
             // 
             // TeamOneName
             // 
@@ -192,6 +196,7 @@ namespace TrackerUI
             this.scoreButton.TabIndex = 13;
             this.scoreButton.Text = "Score";
             this.scoreButton.UseVisualStyleBackColor = true;
+            this.scoreButton.Click += new System.EventHandler(this.scoreButton_Click);
             // 
             // TournamentViewerForm
             // 

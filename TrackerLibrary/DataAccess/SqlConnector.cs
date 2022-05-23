@@ -17,8 +17,7 @@ namespace TrackerLibrary.DataAccess
         /// Saves a new prize to the database.
         /// </summary>
         /// <param name="model"> The prize information.</param>
-        /// <returns>The prize information, including the unique identifier.</returns>
-        public PrizeModel CreatePrize(PrizeModel model)
+        public void CreatePrize(PrizeModel model)
         {
 
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GlobalConfig.CnnString(db)))
@@ -33,16 +32,14 @@ namespace TrackerLibrary.DataAccess
                 connection.Execute("dbo.spPrizes_Insert", p, commandType: CommandType.StoredProcedure);
                 model.Id = p.Get<int>("@id");
 
-                return model;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public PersonModel CreatePerson(PersonModel model)
+        /// <param name="model"></param> 
+        public void CreatePerson(PersonModel model)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GlobalConfig.CnnString(db)))
             {
@@ -55,11 +52,9 @@ namespace TrackerLibrary.DataAccess
                 connection.Execute("dbo.spPeople_Insert", p, commandType: CommandType.StoredProcedure);
                 model.Id = p.Get<int>("@id");
 
-                return model;
-
             }
         }
-        public TeamModel CreateTeam(TeamModel model)
+        public void CreateTeam(TeamModel model)
         {
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GlobalConfig.CnnString(db)))
             {
@@ -78,9 +73,6 @@ namespace TrackerLibrary.DataAccess
                     connection.Execute("dbo.spTeamMembers_Insert", p, commandType: CommandType.StoredProcedure);
 
                 }
-
-                return model;
-
             }
         }
 
@@ -119,10 +111,14 @@ namespace TrackerLibrary.DataAccess
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GlobalConfig.CnnString(db)))
             {
                 SaveTournament(connection, model);
+
                 SaveTournamentPrizes(connection, model);
+
                 SaveTournamentEntries(connection, model);
 
                 SaveTournamentRounds(connection, model);
+
+                TournamentLogic.UpdateTournamentResults(model);
             }
         }
 
@@ -316,7 +312,7 @@ namespace TrackerLibrary.DataAccess
                         p.Add("@Score", me.Score);
 
                         connection.Execute("dbo.spMatchupEntries_Update", p, commandType: CommandType.StoredProcedure);
- 
+
                     }
                 }
             }

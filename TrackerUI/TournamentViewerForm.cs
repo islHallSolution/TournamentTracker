@@ -158,9 +158,42 @@ namespace TrackerUI
         {
             LoadMatchups((int)roundDropDown.SelectedItem);
         }
+        private string ValidateData()
+        {
+            string output = "";
+            double teamOneScore = 0;
+            double teamTwoScore = 0;
+            bool scoreOneValid = double.TryParse(teamOneScoreValue.Text, out teamOneScore);
+            bool scoreTwoValid = double.TryParse(teamTwoScoreValue.Text, out teamTwoScore);
+
+            if (!scoreOneValid || !scoreTwoValid)
+            {
+                output = "The Score One value is not a valid number.";
+            }
+            else if (!scoreTwoValid)
+            {
+                output = "The Score Two value is not a valid number.";
+            }
+            else if (teamOneScore == 0 || teamTwoScore == 0)
+            {
+                output = "You did not enter a score for either team.";
+            }
+            else if (teamOneScore == teamTwoScore)
+            {
+                output = "we do not allow ties in this application.";
+            }
+
+            return output;
+        }
 
         private void scoreButton_Click(object sender, EventArgs e)
         {
+            var errorMessage = ValidateData();
+            if (errorMessage.Length > 0)
+            {
+                MessageBox.Show($"input error: {errorMessage}");
+                return;
+            }
             MatchupModel m = (MatchupModel)matchuplistBox.SelectedItem;
             double teamOneScore = 0;
             double teamTwoScore = 0;
@@ -200,41 +233,17 @@ namespace TrackerUI
                     }
                 }
             }
-            if (teamOneScore > teamTwoScore)
+            try
             {
-                m.Winner = m.Entries[0].TeamCompeting;
-            }
-            else if (teamTwoScore > teamOneScore)
-            {
-                m.Winner = m.Entries[1].TeamCompeting;
-            }
-            else
-            {
-                MessageBox.Show("I do not handle tie games.");
-            }
-            //regra dos matchupEntries https://youtu.be/wfWxdh-_k_4?t=72545
+                TournamentLogic.UpdateTournamentResults(tournament);
 
-            foreach (List<MatchupModel> round in tournament.Rounds)
-            {
-                foreach (MatchupModel rm in round)
-                {
-                    foreach (MatchupEntryModel me in rm.Entries)
-                    {
-                        if (me.ParentMatchup != null)
-                        {
-                            if (me.ParentMatchup.Id == m.Id)
-                            {
-                                me.TeamCompeting = m.Winner;
-                                GlobalConfig.Connection.UpdateMatchup(rm);
-                            }
-                        }
-                    }
-                }
             }
-
+            catch (Exception ex)
+            {
+                MessageBox.Show($"The application had the following error! {ex.Message}");
+                return;
+            }
             LoadMatchups((int)roundDropDown.SelectedItem);
-
-            GlobalConfig.Connection.UpdateMatchup(m);
         }
     }
 }

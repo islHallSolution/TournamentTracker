@@ -25,12 +25,12 @@ namespace TrackerLibrary
         public static void InitializaConnections(DatabaseType db)
         {
             if (db == DatabaseType.Sql)
-            { 
+            {
                 SqlConnector sql = new SqlConnector();
                 Connection = sql;
             }
             else if (db == DatabaseType.TextFile)
-            { 
+            {
                 TextConnector text = new TextConnector();
                 Connection = text;
             }
@@ -43,6 +43,10 @@ namespace TrackerLibrary
         public static string CnnString(string name)
         {
             return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+        }
+        public static string AppKeyLookup(string key)
+        {
+            return ConfigurationManager.AppSettings[key];
         }
     }
 }

@@ -11,10 +11,12 @@ namespace TrackerLibrary.Models
     /// </summary>
     public class TournamentModel
     {
+        public event EventHandler<DateTime> OnTournamentComplete;
+
         /// <summary>
         /// The unique identifier for the tournament.
         /// </summary>
-        public int Id { get; set; } 
+        public int Id { get; set; }
 
         /// <summary>
         /// The name given to this tournament.
@@ -40,5 +42,10 @@ namespace TrackerLibrary.Models
         /// The matchups per round.
         /// </summary>
         public List<List<MatchupModel>> Rounds { get; set; } = new List<List<MatchupModel>>();
+
+        public void CompleteTournament()
+        {
+            OnTournamentComplete?.Invoke(this, DateTime.Now);
+        }
     }
 }

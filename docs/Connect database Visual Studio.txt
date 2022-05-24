@@ -1,0 +1,8 @@
+Verify name database server
+	- SqlLocalDB.exe info
+Start database server 
+	- SqlLocalDB.exe start v11.0
+Info database server
+	- SqlLocalDB.exe info v11.0
+	- get instance pipe for connect database: np:\\.\pipe\LOCALDB#1C7E9855\tsql\query
+	- verify state is "running"
